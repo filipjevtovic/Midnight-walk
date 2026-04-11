@@ -1,6 +1,9 @@
 {
   "resources": {
     "models": {
+      "old_well": {
+        "path": "bunar/old_well.obj"
+      }
     }
   },
   "window": {
