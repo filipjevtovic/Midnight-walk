@@ -4,6 +4,7 @@
 
 #include "../include/MainController.hpp"
 
+#include "GUIController.hpp"
 #include "engine/graphics/GraphicsController.hpp"
 #include "engine/platform/PlatformController.hpp"
 
@@ -13,8 +14,11 @@ public:
     void on_mouse_move(engine::platform::MousePosition position) override;
 };
 void MainPlatformEventObserver::on_mouse_move(engine::platform::MousePosition position) {
-    auto cam = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
-    cam->rotate_camera(position.dx, position.dy);
+    auto gui_controller = engine::core::Controller::get<GUIController>();
+    if (!gui_controller->is_enabled()) {
+        auto cam = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
+        cam->rotate_camera(position.dx, position.dy);
+    }
 }
 
 void MainController::initialize() {

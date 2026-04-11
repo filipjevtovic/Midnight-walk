@@ -5,8 +5,9 @@
 #include "../include/MyApp.hpp"
 
 #include "../include/EnvironmentController.hpp"
+#include "../include/GUIController.hpp"
+#include "../include/MainController.hpp"
 #include "spdlog/spdlog.h"
-#include <MainController.hpp>
 
 namespace app {
 
@@ -18,6 +19,9 @@ void MyApp::app_setup() {
 
     auto environment_controller = register_controller<app::EnvironmentController>();
     environment_controller->after(main_controller);
+
+    auto gui_controller = register_controller<app::GUIController>();
+    main_controller->before(gui_controller);
 }
 
 }// namespace app
