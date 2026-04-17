@@ -8,6 +8,7 @@
 #include "../include/GUIController.hpp"
 #include "../include/MainController.hpp"
 #include "spdlog/spdlog.h"
+#include <FlashlightController.hpp>
 
 namespace app {
 
@@ -22,6 +23,9 @@ void MyApp::app_setup() {
 
     auto gui_controller = register_controller<app::GUIController>();
     main_controller->before(gui_controller);
+
+    auto flashlight_controller = register_controller<app::FlashlightController>();
+    flashlight_controller->after(environment_controller);
 }
 
 }// namespace app

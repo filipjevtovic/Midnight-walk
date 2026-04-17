@@ -8,6 +8,7 @@
 #include "engine/graphics/OpenGL.hpp"
 #include "engine/platform/PlatformController.hpp"
 #include "engine/resources/ResourcesController.hpp"
+#include <FlashlightController.hpp>
 
 namespace app {
 
@@ -48,22 +49,9 @@ void EnvironmentController::draw_well() {
     model = rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     main_shader->set_mat4("model", model);
 
-    auto campos = graphics->camera()->Position;
-    auto camdir = graphics->camera()->Front;
-    main_shader->set_vec3("flashlight.position", campos);
-    main_shader->set_vec3("flashlight.direction", camdir);
-    main_shader->set_vec3("flashlight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-    main_shader->set_vec3("flashlight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-    main_shader->set_vec3("flashlight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-    // attentuation distance ~65:
-    main_shader->set_float("flashlight.att_const", 1.0f);
-    main_shader->set_float("flashlight.att_lin", 0.07f);
-    main_shader->set_float("flashlight.att_quad", 0.017f);
+    auto flashlight = engine::core::Controller::get<FlashlightController>();
+    flashlight->setup_flashlight(main_shader);
 
-    main_shader->set_float("flashlight.cutOff", glm::cos(glm::radians(12.5f)));
-    main_shader->set_float("flashlight.outerCutOff", glm::cos(glm::radians(17.5f)));
-
-    main_shader->set_vec3("viewPos", campos);
     old_well->draw(main_shader);
 }
 
