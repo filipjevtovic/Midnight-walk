@@ -4,6 +4,7 @@
 
 #include "EnvironmentController.hpp"
 
+#include "../../engine/libs/glad/include/glad/glad.h"
 #include "engine/graphics/GraphicsController.hpp"
 #include "engine/graphics/OpenGL.hpp"
 #include "engine/platform/PlatformController.hpp"
@@ -24,6 +25,7 @@ std::string_view EnvironmentController::name() const {
 
 void EnvironmentController::draw() {
     draw_well();
+    draw_lightbulbs();
     draw_street_lamps();
 }
 
@@ -81,6 +83,29 @@ void EnvironmentController::draw_street_lamps() {
         models[i] = glm::translate(models[i], glm::vec3(0.0f, 0.0f, -7.0f));
         main_shader->set_mat4("model", models[i]);
         lamps[i]->draw(main_shader);
+    }
+}
+
+void EnvironmentController::draw_lightbulbs() {
+    auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+
+    std::vector<engine::resources::Model *> bulbs(NUM_LAMPS);
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
+        bulbs[i] = resource->model("lightbulb");
+    }
+    auto basic_shader = resource->shader("basic");
+    basic_shader->use();
+    basic_shader->set_mat4("projection", graphics->projection_matrix());
+    basic_shader->set_mat4("view", graphics->camera()->view_matrix());
+
+    std::vector<glm::mat4> models(NUM_LAMPS, glm::mat4(1.0f));
+
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
+        models[i] = glm::translate(models[i], glm::vec3(0.0f, 7.5f, -7.0f));
+        models[i] = glm::scale(models[i], glm::vec3(0.3f, 0.3f, 0.3f));
+        basic_shader->set_mat4("model", models[i]);
+        bulbs[i]->draw(basic_shader);
     }
 }
 

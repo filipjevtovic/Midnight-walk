@@ -21,6 +21,7 @@ private:
     void end_draw() override;
     void draw_well();//placeholder model...
     void draw_street_lamps();
+    void draw_lightbulbs();
 };
 }// namespace app
 #endif//MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
