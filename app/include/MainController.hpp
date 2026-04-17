@@ -4,7 +4,7 @@
 
 #ifndef MATF_RG_PROJECT_MAINCONTROLLER_HPP
 #define MATF_RG_PROJECT_MAINCONTROLLER_HPP
-#include "engine/core/Controller.hpp"
+#include <engine/core/Controller.hpp>
 
 namespace app {
 class MainController : public engine::core::Controller {

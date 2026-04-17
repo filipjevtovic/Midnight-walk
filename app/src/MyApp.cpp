@@ -2,12 +2,12 @@
 // Created by filip on 4/11/26.
 //
 
-#include "../include/MyApp.hpp"
+#include <MyApp.hpp>
 
-#include "../include/EnvironmentController.hpp"
-#include "../include/GUIController.hpp"
-#include "../include/MainController.hpp"
-#include "spdlog/spdlog.h"
+#include <EnvironmentController.hpp>
+#include <GUIController.hpp>
+#include <MainController.hpp>
+#include <spdlog/spdlog.h>
 
 namespace app {
 

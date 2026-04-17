@@ -4,7 +4,7 @@
 
 #ifndef MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
 #define MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
-#include "engine/core/Controller.hpp"
+#include <engine/core/Controller.hpp>
 
 namespace app {
 class EnvironmentController : public engine::core::Controller {

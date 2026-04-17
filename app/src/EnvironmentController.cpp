@@ -2,12 +2,10 @@
 // Created by filip on 4/11/26.
 //
 
-#include "EnvironmentController.hpp"
+#include <EnvironmentController.hpp>
 
-#include "engine/graphics/GraphicsController.hpp"
-#include "engine/graphics/OpenGL.hpp"
-#include "engine/platform/PlatformController.hpp"
-#include "engine/resources/ResourcesController.hpp"
+#include <engine/core/Engine.hpp>
+#include <engine/graphics/GraphicsController.hpp>
 
 namespace app {
 

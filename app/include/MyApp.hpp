@@ -4,7 +4,7 @@
 
 #ifndef MATF_RG_PROJECT_MYAPP_HPP
 #define MATF_RG_PROJECT_MYAPP_HPP
-#include "engine/core/App.hpp"
+#include <engine/core/App.hpp>
 
 namespace app {
 

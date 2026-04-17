@@ -2,11 +2,11 @@
 // Created by filip on 4/11/26.
 //
 
-#include "../include/MainController.hpp"
+#include <MainController.hpp>
 
-#include "GUIController.hpp"
-#include "engine/graphics/GraphicsController.hpp"
-#include "engine/platform/PlatformController.hpp"
+#include <GUIController.hpp>
+#include <engine/core/Engine.hpp>
+#include <engine/graphics/GraphicsController.hpp>
 
 namespace app {
 class MainPlatformEventObserver : public engine::platform::PlatformEventObserver {

@@ -2,10 +2,10 @@
 // Created by filip on 4/12/26.
 //
 
-#include "GUIController.hpp"
+#include <GUIController.hpp>
 
-#include "engine/graphics/GraphicsController.hpp"
-#include "engine/platform/PlatformController.hpp"
+#include <engine/core/Engine.hpp>
+#include <engine/graphics/GraphicsController.hpp>
 
 #include <imgui.h>
 
