@@ -28,7 +28,16 @@ void FlashlightController::setup_flashlight(engine::resources::Shader *shader) {
     shader->set_float("flashlight.cutOff", glm::cos(glm::radians(12.5f)));
     shader->set_float("flashlight.outerCutOff", glm::cos(glm::radians(17.5f)));
 
+    shader->set_bool("flashlight.isEnabled", flashlight_state);
+
     shader->set_vec3("viewPos", camera_position);
+}
+
+void FlashlightController::poll_events() {
+    auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+    if (platform->key(engine::platform::KeyId::KEY_X).state() == engine::platform::Key::State::JustPressed) {
+        flashlight_state = !flashlight_state;
+    }
 }
 
 }// namespace app

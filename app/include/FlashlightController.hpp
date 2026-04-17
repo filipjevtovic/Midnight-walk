@@ -14,7 +14,9 @@ public:
     void setup_flashlight(engine::resources::Shader *shader);
 
 private:
+    void poll_events() override;
     void initialize() override;
+    bool flashlight_state = true;
 };
 }// namespace app
 

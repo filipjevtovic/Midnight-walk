@@ -25,6 +25,8 @@ void main()
 #version 330 core
 
 struct SpotLight {
+    bool isEnabled;
+
     vec3 position;
     vec3 direction;
 
@@ -58,7 +60,9 @@ void main() {
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 result = vec3(0.0f);
-    result += CalculateSpotLight(flashlight, norm, FragPos, viewDir);
+    if (flashlight.isEnabled) {
+        result += CalculateSpotLight(flashlight, norm, FragPos, viewDir);
+    }
 
     FragColor = vec4(result, 1.0);
 }
