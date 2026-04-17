@@ -16,7 +16,7 @@ private:
     void initialize() override;
     void begin_draw() override;
     void end_draw() override;
-    void draw_tree();//placeholder model...
+    void draw_well();//placeholder model...
 };
 }// namespace app
 #endif//MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
