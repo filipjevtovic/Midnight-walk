@@ -10,6 +10,8 @@
 #include "engine/resources/ResourcesController.hpp"
 #include <FlashlightController.hpp>
 
+#include <vector>
+
 namespace app {
 
 void EnvironmentController::initialize() {
@@ -22,6 +24,7 @@ std::string_view EnvironmentController::name() const {
 
 void EnvironmentController::draw() {
     draw_well();
+    draw_street_lamps();
 }
 
 void EnvironmentController::begin_draw() {
@@ -53,6 +56,32 @@ void EnvironmentController::draw_well() {
     flashlight->setup_flashlight(main_shader);
 
     old_well->draw(main_shader);
+}
+
+void EnvironmentController::draw_street_lamps() {
+    // Model taken from: https://sketchfab.com/3d-models/old-english-street-lamp-obj-6341be23fc704d19967944359a410d68
+    auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+
+    std::vector<engine::resources::Model *> lamps(NUM_LAMPS);
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
+        lamps[i] = resource->model("street_lamp");
+    }
+    auto main_shader = resource->shader("MainShader");
+    main_shader->use();
+    main_shader->set_mat4("projection", graphics->projection_matrix());
+    main_shader->set_mat4("view", graphics->camera()->view_matrix());
+
+    std::vector<glm::mat4> models(NUM_LAMPS, glm::mat4(1.0f));
+
+    auto flashlight = engine::core::Controller::get<FlashlightController>();
+    flashlight->setup_flashlight(main_shader);
+
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
+        models[i] = glm::translate(models[i], glm::vec3(0.0f, 0.0f, -7.0f));
+        main_shader->set_mat4("model", models[i]);
+        lamps[i]->draw(main_shader);
+    }
 }
 
 }// namespace app
