@@ -9,7 +9,7 @@
 namespace app {
 
 size_t LampController::num_lamps() const {
-    return _num_lamps;
+    return NUM_LAMPS;
 }
 
 void LampController::initialize() {
@@ -28,21 +28,12 @@ void LampController::draw() {
     draw_street_lamps();
 }
 
-void LampController::begin_draw() {
-    engine::graphics::OpenGL::clear_buffers();
-}
-
-void LampController::end_draw() {
-    auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
-    platform->swap_buffers();
-}
-
 void LampController::set_point_lights(engine::resources::Shader *shader) const {
     auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
     auto camera = graphics->camera();
     auto camera_position = camera->Position;
 
-    for (size_t i = 0; i < _num_lamps; i++) {
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
         std::string id = "lamps[" + std::to_string(i) + "]";
 
         shader->set_vec3(id + ".position", lamp_positions[i] + bulb_pos_offset);
@@ -65,8 +56,8 @@ void LampController::draw_street_lamps() const {
     auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
     auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
 
-    std::vector<engine::resources::Model *> lamps(_num_lamps);
-    for (size_t i = 0; i < _num_lamps; i++) {
+    std::vector<engine::resources::Model *> lamps(NUM_LAMPS);
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
         lamps[i] = resource->model("street_lamp");
     }
     auto main_shader = resource->shader("MainShader");
@@ -74,14 +65,14 @@ void LampController::draw_street_lamps() const {
     main_shader->set_mat4("projection", graphics->projection_matrix());
     main_shader->set_mat4("view", graphics->camera()->view_matrix());
 
-    std::vector<glm::mat4> models(_num_lamps, glm::mat4(1.0f));
+    std::vector<glm::mat4> models(NUM_LAMPS, glm::mat4(1.0f));
 
     auto flashlight = engine::core::Controller::get<FlashlightController>();
     flashlight->setup_flashlight(main_shader);
 
     set_point_lights(main_shader);
 
-    for (size_t i = 0; i < _num_lamps; i++) {
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
         models[i] = glm::translate(models[i], lamp_positions[i]);
         main_shader->set_mat4("model", models[i]);
         lamps[i]->draw(main_shader);
@@ -92,8 +83,8 @@ void LampController::draw_lightbulbs() const {
     auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
     auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
 
-    std::vector<engine::resources::Model *> bulbs(_num_lamps);
-    for (size_t i = 0; i < _num_lamps; i++) {
+    std::vector<engine::resources::Model *> bulbs(NUM_LAMPS);
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
         bulbs[i] = resource->model("lightbulb");
     }
     auto basic_shader = resource->shader("basic");
@@ -101,11 +92,11 @@ void LampController::draw_lightbulbs() const {
     basic_shader->set_mat4("projection", graphics->projection_matrix());
     basic_shader->set_mat4("view", graphics->camera()->view_matrix());
 
-    std::vector<glm::mat4> models(_num_lamps, glm::mat4(1.0f));
+    std::vector<glm::mat4> models(NUM_LAMPS, glm::mat4(1.0f));
 
     basic_shader->set_vec3("lightColor", lighbulb_color);
 
-    for (size_t i = 0; i < _num_lamps; i++) {
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
         glm::vec3 bulb_pos = lamp_positions[i] + bulb_pos_offset;
         models[i] = glm::translate(models[i], bulb_pos);
         models[i] = glm::scale(models[i], glm::vec3(0.3f, 0.3f, 0.3f));
