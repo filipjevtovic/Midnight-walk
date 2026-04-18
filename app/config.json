@@ -3,6 +3,12 @@
     "models": {
       "old_well": {
         "path": "bunar/old_well.obj"
+      },
+      "street_lamp": {
+        "path": "street_light/street_lamp.obj"
+      },
+      "lightbulb": {
+        "path": "lightbulb/sphere.obj"
       }
     }
   },

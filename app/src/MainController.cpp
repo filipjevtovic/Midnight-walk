@@ -55,6 +55,13 @@ void MainController::update_camera() {
     if (platform->key(engine::platform::KeyId::KEY_D).is_down()) {
         cam->move_camera(engine::graphics::Camera::Movement::RIGHT, dt * 2);
     }
+    // TODO: DELETE the following two in the final version (?)
+    if (platform->key(engine::platform::KeyId::KEY_UP).is_down()) {
+        cam->move_camera(engine::graphics::Camera::Movement::UP, dt * 2);
+    }
+    if (platform->key(engine::platform::KeyId::KEY_DOWN).is_down()) {
+        cam->move_camera(engine::graphics::Camera::Movement::DOWN, dt * 2);
+    }
 }
 
 }// namespace app

@@ -4,6 +4,7 @@
 
 #ifndef MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
 #define MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
+
 #include <engine/core/Controller.hpp>
 
 namespace app {
@@ -16,7 +17,7 @@ private:
     void initialize() override;
     void begin_draw() override;
     void end_draw() override;
-    void draw_tree();//placeholder model...
+    void draw_well();//placeholder model...
 };
 }// namespace app
 #endif//MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP

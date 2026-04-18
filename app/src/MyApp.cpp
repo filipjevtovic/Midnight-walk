@@ -2,11 +2,12 @@
 // Created by filip on 4/11/26.
 //
 
-#include <MyApp.hpp>
-
 #include <EnvironmentController.hpp>
+#include <FlashlightController.hpp>
 #include <GUIController.hpp>
+#include <LampController.hpp>
 #include <MainController.hpp>
+#include <MyApp.hpp>
 #include <spdlog/spdlog.h>
 
 namespace app {
@@ -22,6 +23,12 @@ void MyApp::app_setup() {
 
     auto gui_controller = register_controller<app::GUIController>();
     main_controller->before(gui_controller);
+
+    auto flashlight_controller = register_controller<app::FlashlightController>();
+    flashlight_controller->after(environment_controller);
+
+    auto lamp_controller = register_controller<app::LampController>();
+    lamp_controller->after(flashlight_controller);
 }
 
 }// namespace app
