@@ -17,6 +17,9 @@ namespace app {
 
 void EnvironmentController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
+
+    lamp_positions[0] = glm::vec3(0.0f, 0.0f, -7.0f);
+    lamp_positions[1] = glm::vec3(1.0f, 0.0f, -3.0f);
 }
 
 std::string_view EnvironmentController::name() const {
@@ -57,6 +60,8 @@ void EnvironmentController::draw_well() {
     auto flashlight = engine::core::Controller::get<FlashlightController>();
     flashlight->setup_flashlight(main_shader);
 
+    set_point_lights(main_shader);
+
     old_well->draw(main_shader);
 }
 
@@ -79,8 +84,10 @@ void EnvironmentController::draw_street_lamps() {
     auto flashlight = engine::core::Controller::get<FlashlightController>();
     flashlight->setup_flashlight(main_shader);
 
+    set_point_lights(main_shader);
+
     for (size_t i = 0; i < NUM_LAMPS; i++) {
-        models[i] = glm::translate(models[i], glm::vec3(0.0f, 0.0f, -7.0f));
+        models[i] = glm::translate(models[i], lamp_positions[i]);
         main_shader->set_mat4("model", models[i]);
         lamps[i]->draw(main_shader);
     }
@@ -102,11 +109,36 @@ void EnvironmentController::draw_lightbulbs() {
     std::vector<glm::mat4> models(NUM_LAMPS, glm::mat4(1.0f));
 
     for (size_t i = 0; i < NUM_LAMPS; i++) {
-        models[i] = glm::translate(models[i], glm::vec3(0.0f, 7.5f, -7.0f));
+        glm::vec3 bulb_pos = lamp_positions[i] + bulb_pos_offset;
+        models[i] = glm::translate(models[i], bulb_pos);
         models[i] = glm::scale(models[i], glm::vec3(0.3f, 0.3f, 0.3f));
         basic_shader->set_mat4("model", models[i]);
         bulbs[i]->draw(basic_shader);
     }
 }
+
+void EnvironmentController::set_point_lights(engine::resources::Shader *shader) {
+    auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+    auto camera = graphics->camera();
+    auto camera_position = camera->Position;
+
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
+        std::string id = "lamps[" + std::to_string(i) + "]";
+
+        shader->set_vec3(id + ".position", lamp_positions[i] + bulb_pos_offset);
+
+        // attentuation distance ~325
+        shader->set_float(id + ".att_const", 1.0f);
+        shader->set_float(id + ".att_lin", 0.014f);
+        shader->set_float(id + ".att_quad", 0.0007f);
+
+        shader->set_vec3(id + ".ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+        shader->set_vec3(id + ".diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
+        shader->set_vec3(id + ".specular", glm::vec3(1.0f, 1.0f, 1.0f));
+    }
+
+    shader->set_vec3("viewPos", camera_position);
+}
+
 
 }// namespace app
