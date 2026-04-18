@@ -108,6 +108,8 @@ void EnvironmentController::draw_lightbulbs() {
 
     std::vector<glm::mat4> models(NUM_LAMPS, glm::mat4(1.0f));
 
+    basic_shader->set_vec3("lightColor", lighbulb_color);
+
     for (size_t i = 0; i < NUM_LAMPS; i++) {
         glm::vec3 bulb_pos = lamp_positions[i] + bulb_pos_offset;
         models[i] = glm::translate(models[i], bulb_pos);
@@ -132,9 +134,9 @@ void EnvironmentController::set_point_lights(engine::resources::Shader *shader) 
         shader->set_float(id + ".att_lin", 0.014f);
         shader->set_float(id + ".att_quad", 0.0007f);
 
-        shader->set_vec3(id + ".ambient", glm::vec3(0.05f, 0.05f, 0.05f));
-        shader->set_vec3(id + ".diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
-        shader->set_vec3(id + ".specular", glm::vec3(1.0f, 1.0f, 1.0f));
+        shader->set_vec3(id + ".ambient", glm::vec3(0.05f, 0.05f, 0.05f) * lighbulb_color);
+        shader->set_vec3(id + ".diffuse", glm::vec3(0.8f, 0.8f, 0.8f) * lighbulb_color);
+        shader->set_vec3(id + ".specular", glm::vec3(1.0f, 1.0f, 1.0f) * lighbulb_color);
     }
 
     shader->set_vec3("viewPos", camera_position);

@@ -26,6 +26,7 @@ private:
     void set_point_lights(engine::resources::Shader *shader);
     std::vector<glm::vec3> lamp_positions{NUM_LAMPS};
     const glm::vec3 bulb_pos_offset{glm::vec3(0.0f, 7.5f, 0.0f)};
+    const glm::vec3 lighbulb_color{glm::vec3(1.0f, 0.766f, 0.336f)};
 };
 }// namespace app
 #endif//MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
