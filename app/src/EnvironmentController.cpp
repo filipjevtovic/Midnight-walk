@@ -20,6 +20,7 @@ std::string_view EnvironmentController::name() const {
 
 void EnvironmentController::draw() {
     draw_well();
+    draw_skybox();
 }
 
 void EnvironmentController::begin_draw() {
@@ -54,6 +55,15 @@ void EnvironmentController::draw_well() {
     lamps->set_point_lights(main_shader);
 
     old_well->draw(main_shader);
+}
+
+void EnvironmentController::draw_skybox() {
+    auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto skybox = resource->skybox("skybox1");
+    auto shader = resource->shader("SkyboxShader");
+    auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+
+    graphics->draw_skybox(shader, skybox);
 }
 
 }// namespace app
