@@ -24,6 +24,9 @@ void MainPlatformEventObserver::on_mouse_move(engine::platform::MousePosition po
 void MainController::initialize() {
     auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
     platform->register_platform_event_observer(std::make_unique<MainPlatformEventObserver>());
+
+    auto cam = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
+    cam->move_camera(engine::graphics::Camera::Movement::UP, 1);
 }
 
 std::string_view MainController::name() const { return "app::MainController"; }
