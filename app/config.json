@@ -9,6 +9,9 @@
       },
       "lightbulb": {
         "path": "lightbulb/sphere.obj"
+      },
+      "ground": {
+        "path": "ground/ground.obj"
       }
     }
   },

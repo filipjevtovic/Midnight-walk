@@ -13,11 +13,13 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec2 tiling;
+
 void main()
 {
     FragPos = vec3(model * vec4(aPos, 1.0));
     Normal = mat3(transpose(inverse(model))) * aNormal; //TODO: pass already calculated version.
-    TexCoords = aTexCoords;
+    TexCoords = aTexCoords * tiling;
     gl_Position = projection * view * vec4(FragPos, 1.0);
 }
 
