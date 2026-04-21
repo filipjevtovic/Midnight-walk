@@ -23,6 +23,7 @@ void MyApp::app_setup() {
 
     auto gui_controller = register_controller<app::GUIController>();
     main_controller->before(gui_controller);
+    gui_controller->after(environment_controller);
 
     auto flashlight_controller = register_controller<app::FlashlightController>();
     flashlight_controller->after(environment_controller);
