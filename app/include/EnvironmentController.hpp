@@ -5,7 +5,7 @@
 #ifndef MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
 #define MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
 
-#include <engine/core/Controller.hpp>
+#include <engine/core/Engine.hpp>
 
 namespace app {
 class EnvironmentController : public engine::core::Controller {
@@ -20,6 +20,7 @@ private:
     void draw_ground();
     void draw_well();//placeholder model...
     void draw_skybox();
+    void draw_bench(glm::vec3 position, bool rotate = false);
 };
 }// namespace app
 #endif//MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP

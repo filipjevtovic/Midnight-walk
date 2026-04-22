@@ -12,6 +12,9 @@
       },
       "ground": {
         "path": "ground/ground.obj"
+      },
+      "bench": {
+        "path": "park-bench/park-bench.obj"
       }
     }
   },
