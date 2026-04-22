@@ -55,7 +55,7 @@ struct PointLight {
     float att_lin;
     float att_quad;
 };
-#define NUM_LIGHTS 2
+#define NUM_LIGHTS 6
 uniform PointLight lamps[NUM_LIGHTS];
 
 out vec4 FragColor;

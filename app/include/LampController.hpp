@@ -7,7 +7,7 @@
 
 #include <engine/core/Engine.hpp>
 
-#define NUM_LAMPS (2)
+#define NUM_LAMPS (6)
 
 namespace app {
 class LampController : public engine::core::Controller {
