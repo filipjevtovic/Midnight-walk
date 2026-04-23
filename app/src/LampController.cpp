@@ -43,10 +43,10 @@ void LampController::set_point_lights(engine::resources::Shader *shader) const {
 
         shader->set_vec3(id + ".position", lamp_positions[i] + bulb_pos_offset);
 
-        // attentuation distance ~325
+        // attentuation distance ~160
         shader->set_float(id + ".att_const", 1.0f);
-        shader->set_float(id + ".att_lin", 0.014f);
-        shader->set_float(id + ".att_quad", 0.0007f);
+        shader->set_float(id + ".att_lin", 0.027f);
+        shader->set_float(id + ".att_quad", 0.0028f);
 
         shader->set_vec3(id + ".ambient", glm::vec3(0.05f, 0.05f, 0.05f) * lighbulb_color);
         shader->set_vec3(id + ".diffuse", glm::vec3(0.8f, 0.8f, 0.8f) * lighbulb_color);

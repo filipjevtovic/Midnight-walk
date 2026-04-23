@@ -20,10 +20,10 @@ void FlashlightController::setup_flashlight(engine::resources::Shader *shader) {
     shader->set_vec3("flashlight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
     shader->set_vec3("flashlight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
     shader->set_vec3("flashlight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-    // attentuation distance ~100:
+    // attentuation distance ~160:
     shader->set_float("flashlight.att_const", 1.0f);
-    shader->set_float("flashlight.att_lin", 0.045f);
-    shader->set_float("flashlight.att_quad", 0.0075f);
+    shader->set_float("flashlight.att_lin", 0.027f);
+    shader->set_float("flashlight.att_quad", 0.0028f);
 
     shader->set_float("flashlight.cutOff", glm::cos(glm::radians(12.5f)));
     shader->set_float("flashlight.outerCutOff", glm::cos(glm::radians(17.5f)));
