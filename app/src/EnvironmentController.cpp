@@ -18,12 +18,14 @@ std::string_view EnvironmentController::name() const {
     return "app::EnvironmentController";
 }
 void EnvironmentController::draw() {
-    draw_well();
+    //draw_well();
     draw_ground();
 
     draw_bench(glm::vec3(12.0f, 0.0f, -1.0f), true);
     draw_bench(glm::vec3(-11.0f, 0.0f, 8.5f), false);
     draw_bench(glm::vec3(-11.0f, 0.0f, -4.5f), false);
+
+    draw_statue();
 
     draw_skybox();
 }
@@ -124,6 +126,32 @@ void EnvironmentController::draw_bench(glm::vec3 position, bool to_rotate) {
     lamps->set_point_lights(main_shader);
 
     bench->draw(main_shader);
+}
+
+void EnvironmentController::draw_statue() {
+    // Model taken from: https://sketchfab.com/3d-models/stone-monument-f63da49ec506459fb3da095dcf4f3e45
+    auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+
+    auto statue = resource->model("statue");
+    auto main_shader = resource->shader("MainShader");
+    main_shader->use();
+    main_shader->set_mat4("projection", graphics->projection_matrix());
+    main_shader->set_mat4("view", graphics->camera()->view_matrix());
+
+    auto model = glm::mat4(1.0f);
+    model = translate(model, glm::vec3(1.0f, 0.0f, -12.0f));
+    main_shader->set_mat4("model", model);
+
+    main_shader->set_vec2("tiling", glm::vec2(1.0f, 1.0f));
+
+    auto flashlight = engine::core::Controller::get<FlashlightController>();
+    flashlight->setup_flashlight(main_shader);
+
+    auto lamps = engine::core::Controller::get<LampController>();
+    lamps->set_point_lights(main_shader);
+
+    statue->draw(main_shader);
 }
 
 }// namespace app

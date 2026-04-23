@@ -27,6 +27,7 @@ void MainController::initialize() {
 
     auto cam = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
     cam->move_camera(engine::graphics::Camera::Movement::UP, 1);
+    cam->move_camera(engine::graphics::Camera::Movement::BACKWARD, 3);
 }
 
 std::string_view MainController::name() const { return "app::MainController"; }

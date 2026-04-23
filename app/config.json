@@ -15,6 +15,10 @@
       },
       "bench": {
         "path": "park-bench/park-bench.obj"
+      },
+      "statue": {
+        "path": "statue/monument.obj",
+        "flip_uvs": true
       }
     }
   },

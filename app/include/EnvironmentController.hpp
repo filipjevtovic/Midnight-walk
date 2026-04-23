@@ -21,6 +21,7 @@ private:
     void draw_well();//placeholder model...
     void draw_skybox();
     void draw_bench(glm::vec3 position, bool rotate = false);
+    void draw_statue();
 };
 }// namespace app
 #endif//MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
