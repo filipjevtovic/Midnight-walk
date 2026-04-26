@@ -25,6 +25,8 @@ void MainController::initialize() {
     auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
     platform->register_platform_event_observer(std::make_unique<MainPlatformEventObserver>());
 
+    platform->set_enable_cursor(false);
+
     auto cam = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
     cam->move_camera(engine::graphics::Camera::Movement::UP, 1);
     cam->move_camera(engine::graphics::Camera::Movement::BACKWARD, 3);
