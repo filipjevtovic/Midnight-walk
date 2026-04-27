@@ -66,6 +66,7 @@ void EnvironmentController::draw_well() {
 }
 
 void EnvironmentController::draw_skybox() {
+    // Skybox taken from https://drive.google.com/drive/folders/1IRbOo3bMVDwj2NjgSwbSFDWoLHSHGHGe
     auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
     auto skybox = resource->skybox("skybox1");
     auto shader = resource->shader("SkyboxShader");
