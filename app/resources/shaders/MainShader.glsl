@@ -54,6 +54,10 @@ struct PointLight {
     float att_const;
     float att_lin;
     float att_quad;
+
+    float flicker_a;
+    float flicker_b;
+    float flicker_c;
 };
 #define NUM_LIGHTS 6
 uniform PointLight lamps[NUM_LIGHTS];
@@ -69,6 +73,8 @@ uniform sampler2D texture_specular1;
 
 uniform SpotLight flashlight;
 uniform vec3 viewPos;
+
+uniform float time;
 
 vec3 CalculateSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
@@ -124,5 +130,19 @@ vec3 CalculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewD
     vec3 diffuse = light.diffuse * diff * vec3(texture(texture_diffuse1, TexCoords));
     vec3 specular = light.specular * spec * vec3(texture(texture_specular1, TexCoords));
 
-    return (ambient + diffuse + specular) * attenuation;
+    float flicker;
+    if (light.flicker_b < 0.5) {
+        // Instead of branching, only default lighting will have b=0
+        flicker = 1.0;
+    }
+    else {
+        float t = floor(time * 20.0);
+        // b and c are different to keep these two cosines out of sync
+        float noise = fract(cos(light.flicker_b * t + 2.123)) * fract(cos(light.flicker_c * t));
+        noise = pow(noise, 4.0);
+        // constant a is used as a switch - a=0 turns the light off, a=1 is default and values between scale the effect.
+        flicker = light.flicker_a * (0.1 + 0.9 * noise);
+        flicker = clamp(flicker, 0.0, 1.0);
+    }
+    return (ambient + diffuse + specular) * attenuation * flicker;
 }

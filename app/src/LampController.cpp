@@ -4,6 +4,7 @@
 
 #include <FlashlightController.hpp>
 #include <LampController.hpp>
+#include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 
 namespace app {
@@ -38,6 +39,10 @@ void LampController::set_point_lights(engine::resources::Shader *shader) const {
     auto camera = graphics->camera();
     auto camera_position = camera->Position;
 
+    auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+    auto frame_time = platform->frame_time();
+    shader->set_float("time", frame_time.current);
+
     for (size_t i = 0; i < NUM_LAMPS; i++) {
         std::string id = "lamps[" + std::to_string(i) + "]";
 
@@ -51,6 +56,39 @@ void LampController::set_point_lights(engine::resources::Shader *shader) const {
         shader->set_vec3(id + ".ambient", glm::vec3(0.05f, 0.05f, 0.05f) * lighbulb_color);
         shader->set_vec3(id + ".diffuse", glm::vec3(0.8f, 0.8f, 0.8f) * lighbulb_color);
         shader->set_vec3(id + ".specular", glm::vec3(1.0f, 1.0f, 1.0f) * lighbulb_color);
+
+        switch (m_flicker_states[i]) {
+            case FlickerState::NONE:
+            case FlickerState::START:
+            case FlickerState::PAUSE: {
+                // 1 * cos(0 * t + 0) = 1
+                shader->set_float(id + ".flicker_a", 1.0f);
+                shader->set_float(id + ".flicker_b", 0.0f);
+                shader->set_float(id + ".flicker_c", 0.0f);
+                break;
+            }
+            case FlickerState::FLICKER1: {
+                shader->set_float(id + ".flicker_a", 0.95f);
+                shader->set_float(id + ".flicker_b", 101.0f);
+                shader->set_float(id + ".flicker_c", 1001.0f);
+                break;
+            }
+            case FlickerState::FLICKER2: {
+                shader->set_float(id + ".flicker_a", 0.75f);
+                shader->set_float(id + ".flicker_b", 2345.0f);
+                shader->set_float(id + ".flicker_c", 8765.0f);
+                break;
+            }
+            case FlickerState::DEAD: {
+                // 0 * ... = 0
+                shader->set_float(id + ".flicker_a", 0.0f);
+                shader->set_float(id + ".flicker_b", 1.0f);
+                shader->set_float(id + ".flicker_c", 0.0f);
+                break;
+            }
+            default:
+                std::unreachable();
+        }
     }
 
     shader->set_vec3("viewPos", camera_position);
@@ -103,15 +141,81 @@ void LampController::draw_lightbulbs() const {
 
     basic_shader->set_vec3("lightColor", lighbulb_color);
 
+    auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+    basic_shader->set_float("time", platform->frame_time().current);
+
     for (size_t i = 0; i < NUM_LAMPS; i++) {
         glm::vec3 bulb_pos = lamp_positions[i] + bulb_pos_offset;
         models[i] = glm::translate(models[i], bulb_pos);
         models[i] = glm::scale(models[i], glm::vec3(0.3f, 0.3f, 0.3f));
         basic_shader->set_mat4("model", models[i]);
+
+        switch (m_flicker_states[i]) {
+            case FlickerState::NONE:
+            case FlickerState::START:
+            case FlickerState::PAUSE: {
+                // 1 * cos(0 * t + 0) = 1
+                basic_shader->set_float("flicker_a", 1.0f);
+                basic_shader->set_float("flicker_b", 0.0f);
+                basic_shader->set_float("flicker_c", 0.0f);
+                break;
+            }
+            case FlickerState::FLICKER1: {
+                basic_shader->set_float("flicker_a", 0.95f);
+                basic_shader->set_float("flicker_b", 101.0f);
+                basic_shader->set_float("flicker_c", 1001.0f);
+                break;
+            }
+            case FlickerState::FLICKER2: {
+                basic_shader->set_float("flicker_a", 0.75f);
+                basic_shader->set_float("flicker_b", 2345.0f);
+                basic_shader->set_float("flicker_c", 8765.0f);
+                break;
+            }
+            case FlickerState::DEAD: {
+                // 0 * ... = 0
+                basic_shader->set_float("flicker_a", 0.0f);
+                basic_shader->set_float("flicker_b", 1.0f);
+                basic_shader->set_float("flicker_c", 0.0f);
+                break;
+            }
+            default:
+                std::unreachable();
+        }
+
         bulbs[i]->draw(basic_shader);
     }
 }
 
-}// namespace app
+void LampController::update() {
+    auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
 
-// namespace app
+    for (size_t i = 0; i < NUM_LAMPS; i++) {
+        auto elapsed = platform->frame_time().current - m_last_change[i];
+        if (m_flicker_states[i] == FlickerState::START && elapsed >= 1.5) {
+            m_flicker_states[i] = FlickerState::FLICKER1;
+            m_last_change[i] = platform->frame_time().current;
+        } else if (m_flicker_states[i] == FlickerState::FLICKER1 && elapsed >= 2.0) {
+            m_flicker_states[i] = FlickerState::PAUSE;
+            m_last_change[i] = platform->frame_time().current;
+        } else if (m_flicker_states[i] == FlickerState::PAUSE && elapsed >= 2.0) {
+            m_flicker_states[i] = FlickerState::FLICKER2;
+            m_last_change[i] = platform->frame_time().current;
+        } else if (m_flicker_states[i] == FlickerState::FLICKER2 && elapsed >= 2.0) {
+            m_flicker_states[i] = FlickerState::DEAD;
+            m_last_change[i] = platform->frame_time().current;
+        }
+    }
+}
+
+void LampController::poll_events() {
+    auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+    if (platform->key(engine::platform::KeyId::KEY_F).state() == engine::platform::Key::State::JustPressed) {
+        m_last_change[0] = platform->frame_time().current;
+        m_flicker_states[0] = FlickerState::START;
+        m_last_change[4] = platform->frame_time().current + 0.2f;
+        m_flicker_states[4] = FlickerState::START;
+    }
+}
+
+}// namespace app

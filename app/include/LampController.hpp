@@ -10,6 +10,16 @@
 #define NUM_LAMPS (6)
 
 namespace app {
+
+enum class FlickerState {
+    NONE = 0,
+    START,
+    FLICKER1,
+    PAUSE,
+    FLICKER2,
+    DEAD
+};
+
 class LampController : public engine::core::Controller {
 public:
     std::string_view name() const override;
@@ -23,9 +33,13 @@ public:
 private:
     void initialize() override;
     void draw() override;
-
+    void update() override;
     void draw_lightbulbs() const;
     void draw_street_lamps() const;
+    void poll_events() override;
+
+    std::vector<float> m_last_change{NUM_LAMPS, std::numeric_limits<float>::max()};
+    std::vector<app::FlickerState> m_flicker_states{NUM_LAMPS, static_cast<app::FlickerState>(0)};
 };
 }// namespace app
 

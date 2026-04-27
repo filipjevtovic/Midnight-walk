@@ -31,6 +31,22 @@ in vec2 TexCoords;
 uniform sampler2D texture_diffuse1;
 uniform vec3 lightColor;
 
+uniform float flicker_a;
+uniform float flicker_b;
+uniform float flicker_c;
+uniform float time;
+
 void main() {
-    FragColor = vec4(lightColor * 2.0, 1.0);
+    float flicker;
+    if (flicker_b < 0.5) {
+        flicker = 1.0;
+    }
+    else {
+        float t = floor(time * 20.0);
+        float noise = fract(cos(flicker_b * t + 2.123)) * fract(cos(flicker_c * t));
+        noise = pow(noise, 4.0);
+        flicker = flicker_a * (0.1 + 0.9 * noise);
+        flicker = clamp(flicker, 0.0, 1.0);
+    }
+    FragColor = vec4(lightColor * 2.0, 1.0) * flicker;
 }
