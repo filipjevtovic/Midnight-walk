@@ -18,7 +18,6 @@ private:
     void begin_draw() override;
     void end_draw() override;
     void draw_ground();
-    void draw_well();//placeholder model...
     void draw_skybox();
     void draw_bench(glm::vec3 position, bool rotate = false);
     void draw_statue();

@@ -1,11 +1,9 @@
 {
   "resources": {
     "models": {
-      "old_well": {
-        "path": "bunar/old_well.obj"
-      },
       "street_lamp": {
-        "path": "street_light/street_lamp.obj"
+        "path": "street_light/street_lamp.obj",
+        "flip_uvs": true
       },
       "lightbulb": {
         "path": "lightbulb/sphere.obj"
