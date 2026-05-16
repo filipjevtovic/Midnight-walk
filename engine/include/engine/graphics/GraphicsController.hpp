@@ -14,6 +14,7 @@ struct ImGuiContext;
 
 namespace engine::resources {
 class Skybox;
+class Bloom;
 
 class Shader;
 }// namespace engine::resources
@@ -85,6 +86,10 @@ public:
     * @brief Draws a @ref resources::Skybox with the @ref resources::Shader.
     */
     void draw_skybox(const resources::Shader *shader, const resources::Skybox *skybox);
+
+    void bloom_begin(resources::Bloom *bloom);
+    void bloom_blur(const resources::Shader *blur_shader, const resources::Bloom *bloom);
+    void bloom_draw(const resources::Shader *final_shader, resources::Bloom *bloom);
 
     Camera *camera() {
         return &m_camera;
