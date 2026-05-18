@@ -7,6 +7,7 @@
 #define MATF_RG_PROJECT_RESOURCES_CONTROLLER_HPP
 
 #include <engine/core/Controller.hpp>
+#include <engine/resources/Bloom.hpp>
 #include <engine/resources/Model.hpp>
 #include <engine/resources/Shader.hpp>
 #include <engine/resources/Skybox.hpp>
@@ -60,6 +61,8 @@ public:
     */
     Skybox *skybox(const std::string &name,
                    const std::filesystem::path &path = "", bool flip_uvs = false);
+
+    Bloom *bloom(int width, int height);
 
     /**
     * @brief Retrieves the @ref Shader with a given name. You are not supposed to call `delete` on this pointer.

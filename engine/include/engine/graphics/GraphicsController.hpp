@@ -87,9 +87,9 @@ public:
     */
     void draw_skybox(const resources::Shader *shader, const resources::Skybox *skybox);
 
-    void bloom_begin(resources::Bloom *bloom);
+    void bloom_begin(const resources::Bloom *bloom);
     void bloom_blur(const resources::Shader *blur_shader, const resources::Bloom *bloom);
-    void bloom_draw(const resources::Shader *final_shader, resources::Bloom *bloom);
+    void bloom_draw(const resources::Shader *final_shader, const resources::Bloom *bloom);
 
     Camera *camera() {
         return &m_camera;
