@@ -18,7 +18,7 @@ uniform vec2 tiling;
 void main()
 {
     FragPos = vec3(model * vec4(aPos, 1.0));
-    Normal = mat3(transpose(inverse(model))) * aNormal; //TODO: pass already calculated version.
+    Normal = mat3(transpose(inverse(model))) * aNormal;
     TexCoords = aTexCoords * tiling;
     gl_Position = projection * view * vec4(FragPos, 1.0);
 }
@@ -62,7 +62,8 @@ struct PointLight {
 #define NUM_LIGHTS 6
 uniform PointLight lamps[NUM_LIGHTS];
 
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
 
 in vec2 TexCoords;
 in vec3 Normal;
@@ -91,6 +92,13 @@ void main() {
     }
 
     FragColor = vec4(result, 1.0);
+    float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    if (brightness > 1.0) {
+        BrightColor = vec4(FragColor.rgb, 1.0);
+    }
+    else {
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
 }
 
 vec3 CalculateSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {

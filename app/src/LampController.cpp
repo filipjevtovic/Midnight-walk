@@ -13,6 +13,9 @@ size_t LampController::num_lamps() const {
     return NUM_LAMPS;
 }
 
+extern engine::resources::Bloom *bloom;
+extern engine::resources::Shader *blur_shader, *final_shader;
+
 void LampController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
 
@@ -30,8 +33,13 @@ std::string_view LampController::name() const {
 }
 
 void LampController::draw() {
+    auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+
     draw_lightbulbs();
     draw_street_lamps();
+
+    graphics->bloom_blur(blur_shader, bloom);
+    graphics->bloom_draw(final_shader, bloom);
 }
 
 void LampController::set_point_lights(engine::resources::Shader *shader) const {
