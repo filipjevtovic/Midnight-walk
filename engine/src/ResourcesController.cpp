@@ -3,9 +3,6 @@
 #include <assimp/scene.h>
 #include <engine/graphics/OpenGL.hpp>
 #include <engine/resources/ResourcesController.hpp>
-
-#include "glad/glad.h"
-
 #include <engine/resources/ShaderCompiler.hpp>
 #include <engine/util/Configuration.hpp>
 #include <engine/util/Errors.hpp>
@@ -274,90 +271,6 @@ TextureType AssimpSceneProcessor::assimp_texture_type_to_engine(aiTextureType ty
 
 Bloom *ResourcesController::bloom(int width, int height) {
     auto bloom = std::make_unique<Bloom>(width, height);
-
-    glGenFramebuffers(1, &bloom->m_hdr_fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, bloom->m_hdr_fbo);
-
-    glGenTextures(2, bloom->m_color_buffers);
-    for (unsigned int i = 0; i < 2; i++) {
-        glBindTexture(GL_TEXTURE_2D, bloom->m_color_buffers[i]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, bloom->m_color_buffers[i], 0);
-    }
-
-    glGenRenderbuffers(1, &bloom->m_depth_rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, bloom->m_depth_rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, bloom->m_depth_rbo);
-
-    unsigned int attachments[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-    glDrawBuffers(2, attachments);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        spdlog::info("Framebuffer not complete!");
-    }
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    glGenFramebuffers(2, bloom->m_pingpong_fbos);
-    glGenTextures(2, bloom->m_pingpong_color_buffers);
-    for (unsigned int i = 0; i < 2; i++) {
-        glBindFramebuffer(GL_FRAMEBUFFER, bloom->m_pingpong_fbos[i]);
-        glBindTexture(GL_TEXTURE_2D, bloom->m_pingpong_color_buffers[i]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, bloom->m_pingpong_color_buffers[i], 0);
-
-        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-            spdlog::info("Pingpong framebuffer not complete!");
-        }
-    }
-
-    //clang-format off
-    float quad_vertices[] = {
-            //position         //texture coords
-            -1.0f,
-            1.0f,
-            0.0f,
-            0.0f,
-            1.0f,
-            -1.0f,
-            -1.0f,
-            0.0f,
-            0.0f,
-            0.0f,
-            1.0f,
-            1.0f,
-            0.0f,
-            1.0f,
-            1.0f,
-            1.0f,
-            -1.0f,
-            0.0f,
-            1.0f,
-            0.0f,
-    };
-    //clang-format on
-    glGenVertexArrays(1, &bloom->m_quad_vao);
-    glGenBuffers(1, &bloom->m_quad_vbo);
-
-    glBindVertexArray(bloom->m_quad_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, bloom->m_quad_vbo);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     return bloom.release();
 }
 }// namespace engine::resources

@@ -6,6 +6,7 @@
 #define MATF_RG_PROJECT_BLOOM_HPP
 
 #include <engine/graphics/GraphicsController.hpp>
+#include <spdlog/spdlog.h>
 
 namespace engine::resources {
 // TODO: Add doxygen annotations later
@@ -15,9 +16,7 @@ class Bloom {
 
 public:
     Bloom() = delete;
-    Bloom(int32_t width, int32_t height)
-        : m_width(width)
-        , m_height(height) {}
+    Bloom(int32_t width, int32_t height);
 
     void destroy();
 

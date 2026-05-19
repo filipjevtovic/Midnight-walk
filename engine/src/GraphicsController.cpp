@@ -90,7 +90,7 @@ void GraphicsController::draw_skybox(const resources::Shader *shader, const reso
     CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void GraphicsController::bloom_begin(const resources::Bloom *bloom) {//inside render looP?
+void GraphicsController::bloom_begin(const resources::Bloom *bloom) {
     CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, bloom->m_hdr_fbo);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
