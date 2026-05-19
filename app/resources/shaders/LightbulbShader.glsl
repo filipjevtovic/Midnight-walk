@@ -49,7 +49,7 @@ void main() {
         flicker = flicker_a * (0.1 + 0.9 * noise);
         flicker = clamp(flicker, 0.0, 1.0);
     }
-    FragColor = vec4(lightColor * 10.0, 1.0) * flicker;
+    FragColor = vec4(lightColor * 10.0, 1.0) * flicker * 2.0;
 
     float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
     if (brightness > 1.0) {
