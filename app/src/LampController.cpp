@@ -13,6 +13,9 @@ size_t LampController::num_lamps() const {
     return NUM_LAMPS;
 }
 
+extern engine::resources::Bloom *bloom;
+extern engine::resources::Shader *blur_shader, *final_shader;
+
 void LampController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
 
@@ -32,8 +35,13 @@ std::string_view LampController::name() const {
 }
 
 void LampController::draw() {
+    auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+
     draw_lightbulbs();
     draw_street_lamps();
+
+    graphics->bloom_blur(blur_shader, bloom);
+    graphics->bloom_draw(final_shader, bloom);
 }
 
 void LampController::set_point_lights(engine::resources::Shader *shader) const {
@@ -134,7 +142,7 @@ void LampController::draw_lightbulbs() const {
     for (size_t i = 0; i < NUM_LAMPS; i++) {
         bulbs[i] = resource->model("lightbulb");
     }
-    auto basic_shader = resource->shader("basic");
+    auto basic_shader = resource->shader("LightbulbShader");
     basic_shader->use();
     basic_shader->set_mat4("projection", graphics->projection_matrix());
     basic_shader->set_mat4("view", graphics->camera()->view_matrix());

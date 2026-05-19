@@ -7,7 +7,6 @@
 #include <engine/util/Configuration.hpp>
 #include <engine/util/Errors.hpp>
 #include <spdlog/spdlog.h>
-#include <unordered_set>
 #include <utility>
 
 namespace engine::resources {
@@ -32,6 +31,8 @@ void ResourcesController::terminate() {
     for (auto &[name, resource]: m_sky_boxes) {
         resource->destroy();
     }
+
+    m_bloom->destroy();
 }
 
 
@@ -270,4 +271,8 @@ TextureType AssimpSceneProcessor::assimp_texture_type_to_engine(aiTextureType ty
     }
 }
 
+Bloom *ResourcesController::bloom(int width, int height) {
+    m_bloom = std::make_unique<Bloom>(width, height);
+    return m_bloom.get();
+}
 }// namespace engine::resources

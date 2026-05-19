@@ -10,14 +10,27 @@
 
 namespace app {
 
+engine::resources::Bloom *bloom;
+engine::resources::Shader *blur_shader;
+engine::resources::Shader *final_shader;
+
 void EnvironmentController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
+
+    const auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+    bloom = resources->bloom(1920, 1080);
+    blur_shader = resources->shader("BlurShader");
+    final_shader = resources->shader("FinalShader");
 }
 
 std::string_view EnvironmentController::name() const {
     return "app::EnvironmentController";
 }
 void EnvironmentController::draw() {
+    const auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
+
+    graphics->bloom_begin(bloom);
+
     draw_ground();
 
     draw_bench(glm::vec3(12.0f, 0.0f, -1.0f), true);
@@ -27,6 +40,9 @@ void EnvironmentController::draw() {
     draw_statue();
 
     draw_skybox();
+
+    // Since the whole scene should be rendered before bloom_blur is called and since the LampController is initialized
+    // after EnvironmentController, bloom_blur and bloom_draw will be called after lamps are drawn in LampController...
 }
 
 void EnvironmentController::begin_draw() {

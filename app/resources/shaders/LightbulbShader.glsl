@@ -24,8 +24,6 @@ void main()
 //#shader fragment
 #version 330 core
 
-out vec4 FragColor;
-
 in vec2 TexCoords;
 
 uniform sampler2D texture_diffuse1;
@@ -35,6 +33,9 @@ uniform float flicker_a;
 uniform float flicker_b;
 uniform float flicker_c;
 uniform float time;
+
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
 
 void main() {
     float flicker;
@@ -48,5 +49,13 @@ void main() {
         flicker = flicker_a * (0.1 + 0.9 * noise);
         flicker = clamp(flicker, 0.0, 1.0);
     }
-    FragColor = vec4(lightColor * 2.0, 1.0) * flicker;
+    FragColor = vec4(lightColor * 10.0, 1.0) * flicker * 2.0;
+
+    float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    if (brightness > 1.0) {
+        BrightColor = vec4(FragColor.rgb, 1.0);
+    }
+    else {
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
 }
