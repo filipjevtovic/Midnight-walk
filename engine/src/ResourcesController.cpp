@@ -31,6 +31,8 @@ void ResourcesController::terminate() {
     for (auto &[name, resource]: m_sky_boxes) {
         resource->destroy();
     }
+
+    m_bloom->destroy();
 }
 
 
@@ -270,7 +272,7 @@ TextureType AssimpSceneProcessor::assimp_texture_type_to_engine(aiTextureType ty
 }
 
 Bloom *ResourcesController::bloom(int width, int height) {
-    auto bloom = std::make_unique<Bloom>(width, height);
-    return bloom.release();
+    m_bloom = std::make_unique<Bloom>(width, height);
+    return m_bloom.get();
 }
 }// namespace engine::resources

@@ -120,6 +120,8 @@ private:
     */
     std::unordered_map<std::string, std::unique_ptr<Shader>> m_shaders;
 
+    std::unique_ptr<Bloom> m_bloom;
+
     const std::filesystem::path m_models_path = "resources/models";
     const std::filesystem::path m_textures_path = "resources/textures";
     const std::filesystem::path m_shaders_path = "resources/shaders";
