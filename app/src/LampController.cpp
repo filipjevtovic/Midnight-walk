@@ -140,7 +140,7 @@ void LampController::draw_lightbulbs() const {
     for (size_t i = 0; i < NUM_LAMPS; i++) {
         bulbs[i] = resource->model("lightbulb");
     }
-    auto basic_shader = resource->shader("basic");
+    auto basic_shader = resource->shader("LightbulbShader");
     basic_shader->use();
     basic_shader->set_mat4("projection", graphics->projection_matrix());
     basic_shader->set_mat4("view", graphics->camera()->view_matrix());
