@@ -38,7 +38,7 @@ private:
     void draw_street_lamps() const;
     void poll_events() override;
 
-    std::vector<float> m_last_change{NUM_LAMPS, std::numeric_limits<float>::max()};
+    std::vector<float> m_last_change{};
     std::vector<app::FlickerState> m_flicker_states{NUM_LAMPS, static_cast<app::FlickerState>(0)};
 };
 }// namespace app

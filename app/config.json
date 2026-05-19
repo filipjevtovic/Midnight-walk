@@ -2,7 +2,8 @@
   "resources": {
     "models": {
       "street_lamp": {
-        "path": "street_light/street_lamp.obj"
+        "path": "street_light/street_lamp.obj",
+        "flip_uvs": true
       },
       "lightbulb": {
         "path": "lightbulb/sphere.obj"

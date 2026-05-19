@@ -26,6 +26,8 @@ void LampController::initialize() {
     for (int i = 0; i < NUM_LAMPS / 2; i++) {
         lamp_positions[i + NUM_LAMPS / 2] = glm::vec3(-13.0f, 0.0f, -10.0f + i * 12.0f);
     }
+
+    m_last_change.assign(NUM_LAMPS, std::numeric_limits<float>::max());
 }
 
 std::string_view LampController::name() const {
