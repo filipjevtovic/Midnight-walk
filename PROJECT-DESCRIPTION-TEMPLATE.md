@@ -1,31 +1,39 @@
 # {NAME-OF-THE-PROJECT}
 
-{INDEX} - {STUDENT-FULL-NAME}  
+36/2023 - Filip Jevtović  
 {PROJECT DESCRIPTION}
 
 ## Controls
 
-{BUTTON1} -> {ACTION1}  
-{BUTTON2} -> {ACTION2}  
-...  
-{BUTTONN} -> {ACTIONN}
+W -> move forward
+A -> move left  
+S -> move backward
+D -> move right
+X -> toggle flashlight on/off
+F -> start light flickering animation
+UP -> move up
+DOWN -> move down
+ESC -> close application
+F2 -> toggle GUI on/off
 
 ## Features
 
 ### Fundamental:
 
-[ ] Model with lighting
+[X] Model with lighting
 [ ] Two types of lighting with customizable colors and movement through GUI or ACTIONS
-[ ] {ACTION_X} --- AFTER_M_SECONDS---Triggers---> {EVENT_A} ---> AFTER_N_SECONDS---Triggers---> {EVENT_B}
+[X] Press F --- After 1.5s ---Triggers---> Two lamps flicker for 2s ---> After 2s ---Triggers---> Those two lamps
+flicker for 2s and die
 
 ### Group A:
 
 [ ] Frame-buffers with post-processing   
 [ ] Off-screen Anti-Aliasing  
 [ ] Parallax Mapping
-[ ] Bloom with the use of HDR
+[X] Bloom with the use of HDR
 
 ### Group B:
+
 [ ] Deferred Shading  
 [ ] Point Shadows  
 [ ] SSAO
