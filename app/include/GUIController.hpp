@@ -4,8 +4,8 @@
 
 #ifndef MATF_RG_PROJECT_GUICONTROLLER_HPP
 #define MATF_RG_PROJECT_GUICONTROLLER_HPP
-#include <glm/vec3.hpp>
 #include <engine/core/Controller.hpp>
+#include <glm/vec3.hpp>
 
 namespace app {
 
