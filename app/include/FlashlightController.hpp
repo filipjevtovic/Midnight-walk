@@ -11,7 +11,7 @@ namespace app {
 class FlashlightController : public engine::core::Controller {
 public:
     std::string_view name() const override;
-    void setup_flashlight(engine::resources::Shader *shader);
+    void setup_flashlight(engine::resources::Shader *shader, glm::vec3 color);
 
 private:
     void poll_events() override;

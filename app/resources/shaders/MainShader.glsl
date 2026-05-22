@@ -42,6 +42,8 @@ struct SpotLight {
     float att_const;
     float att_lin;
     float att_quad;
+
+    vec3 color;
 };
 
 struct PointLight {
@@ -120,7 +122,7 @@ vec3 CalculateSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir
     vec3 diffuse = light.diffuse * diff * vec3(texture(texture_diffuse1, TexCoords));
     vec3 specular = light.specular * spec * vec3(texture(texture_specular1, TexCoords));
 
-    return (ambient + diffuse + specular) * (attenuation * I);
+    return (ambient + diffuse + specular) * (attenuation * I) * light.color;
 }
 
 vec3 CalculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {

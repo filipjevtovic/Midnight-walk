@@ -9,7 +9,7 @@ namespace app {
 
 void FlashlightController::initialize() {}
 std::string_view FlashlightController::name() const { return "app::FlashlightController"; }
-void FlashlightController::setup_flashlight(engine::resources::Shader *shader) {
+void FlashlightController::setup_flashlight(engine::resources::Shader *shader, glm::vec3 color) {
     auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
     auto camera = graphics->camera();
     auto camera_position = camera->Position;
@@ -31,6 +31,8 @@ void FlashlightController::setup_flashlight(engine::resources::Shader *shader) {
     shader->set_bool("flashlight.isEnabled", m_flashlight_state);
 
     shader->set_vec3("viewPos", camera_position);
+
+    shader->set_vec3("flashlight.color", color);
 }
 
 void FlashlightController::poll_events() {

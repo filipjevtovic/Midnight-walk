@@ -3,6 +3,7 @@
 //
 
 #include <FlashlightController.hpp>
+#include <GUIController.hpp>
 #include <LampController.hpp>
 #include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
@@ -122,8 +123,11 @@ void LampController::draw_street_lamps() const {
 
     std::vector<glm::mat4> models(NUM_LAMPS, glm::mat4(1.0f));
 
+    auto gui = engine::graphics::GraphicsController::get<app::GUIController>();
+    auto color = gui->color_selection();
+
     auto flashlight = engine::core::Controller::get<FlashlightController>();
-    flashlight->setup_flashlight(main_shader);
+    flashlight->setup_flashlight(main_shader, color);
 
     set_point_lights(main_shader);
 

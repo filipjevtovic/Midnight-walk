@@ -4,6 +4,7 @@
 
 #include <EnvironmentController.hpp>
 #include <FlashlightController.hpp>
+#include <GUIController.hpp>
 #include <LampController.hpp>
 #include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
@@ -81,8 +82,11 @@ void EnvironmentController::draw_ground() {
 
     main_shader->set_vec2("tiling", glm::vec2{17.0f, 17.0f});
 
+    auto gui = engine::graphics::GraphicsController::get<app::GUIController>();
+    auto color = gui->color_selection();
+
     auto flashlight = engine::core::Controller::get<FlashlightController>();
-    flashlight->setup_flashlight(main_shader);
+    flashlight->setup_flashlight(main_shader, color);
 
     auto lamps = engine::core::Controller::get<LampController>();
     lamps->set_point_lights(main_shader);
@@ -109,8 +113,11 @@ void EnvironmentController::draw_bench(glm::vec3 position, bool to_rotate) {
 
     main_shader->set_vec2("tiling", glm::vec2(1.0f, 1.0f));
 
+    auto gui = engine::graphics::GraphicsController::get<app::GUIController>();
+    auto color = gui->color_selection();
+
     auto flashlight = engine::core::Controller::get<FlashlightController>();
-    flashlight->setup_flashlight(main_shader);
+    flashlight->setup_flashlight(main_shader, color);
 
     auto lamps = engine::core::Controller::get<LampController>();
     lamps->set_point_lights(main_shader);
@@ -135,8 +142,11 @@ void EnvironmentController::draw_statue() {
 
     main_shader->set_vec2("tiling", glm::vec2(1.0f, 1.0f));
 
+    auto gui = engine::graphics::GraphicsController::get<app::GUIController>();
+    auto color = gui->color_selection();
+
     auto flashlight = engine::core::Controller::get<FlashlightController>();
-    flashlight->setup_flashlight(main_shader);
+    flashlight->setup_flashlight(main_shader, color);
 
     auto lamps = engine::core::Controller::get<LampController>();
     lamps->set_point_lights(main_shader);
