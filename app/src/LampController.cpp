@@ -139,6 +139,7 @@ void LampController::draw_street_lamps() const {
 }
 
 void LampController::draw_lightbulbs() const {
+    // Model taken from: https://sketchfab.com/3d-models/sphere-cb3372617eed4014b4b1dc68e35b23bf
     auto resource = engine::core::Controller::get<engine::resources::ResourcesController>();
     auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
 
