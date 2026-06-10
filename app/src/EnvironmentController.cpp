@@ -137,7 +137,7 @@ void EnvironmentController::draw_statue() {
     main_shader->set_mat4("view", graphics->camera()->view_matrix());
 
     auto model = glm::mat4(1.0f);
-    model = translate(model, glm::vec3(1.0f, 0.0f, -12.0f));
+    model = translate(model, glm::vec3(1.0f, -0.05f, -12.0f));
     main_shader->set_mat4("model", model);
 
     main_shader->set_vec2("tiling", glm::vec2(1.0f, 1.0f));
