@@ -9,7 +9,7 @@
 #include <spdlog/spdlog.h>
 
 namespace engine::resources {
-// TODO: Add doxygen annotations later
+// Add doxygen annotations later (for AZRS project)...
 class Bloom {
     friend class ResourcesController;
     friend class engine::graphics::GraphicsController;

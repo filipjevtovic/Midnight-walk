@@ -20,7 +20,6 @@ extern engine::resources::Shader *blur_shader, *final_shader;
 void LampController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
 
-    //lamp_positions[0] = glm::vec3(0.0f, 0.0f, -7.0f);
     for (int i = 0; i < NUM_LAMPS / 2; i++) {
         lamp_positions[i] = glm::vec3(13.0f, 0.0f, -16.0f + i * 12.0f);
     }

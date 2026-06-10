@@ -1,7 +1,8 @@
-# RG-project
+# Midnight walk
 
 36/2023 - Filip Jevtović  
-{PROJECT DESCRIPTION}
+A walk through a moonlit park under a starry midnight sky.
+The scene features flickering streetlights and a flashlight configurable through the GUI
 
 ## Controls
 
@@ -11,8 +12,6 @@ S -> move backward
 D -> move right  
 X -> toggle flashlight on/off  
 F -> start light flickering animation  
-UP -> move up  
-DOWN -> move down  
 ESC -> close application  
 F2 -> toggle GUI on/off
 
@@ -23,7 +22,7 @@ F2 -> toggle GUI on/off
 [X] Model with lighting  
 [X] Two types of lighting with customizable colors and movement through GUI or ACTIONS  
 [X] Press F --- After 1.5s ---Triggers---> Two lamps flicker for 2s ---> After 2s ---Triggers---> Those two lamps
-flicker for 2s and die
+flicker for 2s more and die
 
 ### Group A:
 
@@ -51,8 +50,7 @@ _lightbulb_: https://sketchfab.com/3d-models/sphere-cb3372617eed4014b4b1dc68e35b
 custom _ground_ model was made in blender  
 __borrowed models were slightly edited in blender (missing .mtl file, removed lamp glass...)__
 
-## Textures
+## Skyboxes
 
-skybox: https://drive.google.com/drive/folders/1IRbOo3bMVDwj2NjgSwbSFDWoLHSHGHGe
+_skybox_: https://drive.google.com/drive/folders/1IRbOo3bMVDwj2NjgSwbSFDWoLHSHGHGe
 
-{OTHER-RESOURCES}
