@@ -5,10 +5,10 @@
 // clang-format off
 #include <glad/glad.h>
 // clang-format on
+#include <engine/graphics/Bloom.hpp>
 #include <engine/graphics/OpenGL.hpp>
-#include <engine/resources/Bloom.hpp>
 
-namespace engine::resources {
+namespace engine::graphics {
 
 Bloom::Bloom(int32_t width, int32_t height)
     : m_width(width)

@@ -31,8 +31,6 @@ void ResourcesController::terminate() {
     for (auto &[name, resource]: m_sky_boxes) {
         resource->destroy();
     }
-
-    m_bloom->destroy();
 }
 
 
@@ -269,10 +267,5 @@ TextureType AssimpSceneProcessor::assimp_texture_type_to_engine(aiTextureType ty
         case aiTextureType_NORMALS: return TextureType::Normal;
         default: RG_SHOULD_NOT_REACH_HERE("Engine currently doesn't support the aiTextureType: {}", static_cast<int>(type));
     }
-}
-
-Bloom *ResourcesController::bloom(int width, int height) {
-    m_bloom = std::make_unique<Bloom>(width, height);
-    return m_bloom.get();
 }
 }// namespace engine::resources

@@ -5,8 +5,7 @@
 // clang-format on
 #include <engine/graphics/GraphicsController.hpp>
 
-#include <engine/resources/Bloom.hpp>
-
+#include <engine/graphics/Bloom.hpp>
 #include <engine/graphics/OpenGL.hpp>
 #include <engine/platform/PlatformController.hpp>
 #include <engine/resources/Skybox.hpp>
@@ -50,6 +49,7 @@ void GraphicsController::terminate() {
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
+    m_bloom->destroy();
 }
 
 void GraphicsPlatformEventObserver::on_window_resize(int width, int height) {
@@ -90,12 +90,17 @@ void GraphicsController::draw_skybox(const resources::Shader *shader, const reso
     CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void GraphicsController::bloom_begin(const resources::Bloom *bloom) {
+Bloom *GraphicsController::bloom_init(int width, int height) {
+    m_bloom = std::make_unique<Bloom>(width, height);
+    return m_bloom.get();
+}
+
+void GraphicsController::bloom_begin(const graphics::Bloom *bloom) {
     CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, bloom->m_hdr_fbo);
     CHECKED_GL_CALL(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void GraphicsController::bloom_blur(const resources::Shader *blur_shader, const resources::Bloom *bloom) {
+void GraphicsController::bloom_blur(const resources::Shader *blur_shader, const graphics::Bloom *bloom) {
     CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
 
     bool horizontal = true;
@@ -125,7 +130,7 @@ void GraphicsController::bloom_blur(const resources::Shader *blur_shader, const 
     CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
 }
 
-void GraphicsController::bloom_draw(const resources::Shader *final_shader, const resources::Bloom *bloom) {
+void GraphicsController::bloom_draw(const resources::Shader *final_shader, const graphics::Bloom *bloom) {
     CHECKED_GL_CALL(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     final_shader->use();
     final_shader->set_int("scene", 0);

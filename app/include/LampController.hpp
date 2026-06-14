@@ -5,6 +5,7 @@
 #ifndef MATF_RG_PROJECT_LAMPCONTROLLER_HPP
 #define MATF_RG_PROJECT_LAMPCONTROLLER_HPP
 
+#include <engine/graphics/Bloom.hpp>
 #include <engine/core/Engine.hpp>
 
 #define NUM_LAMPS (6)
@@ -40,6 +41,10 @@ private:
 
     std::vector<float> m_last_change{};
     std::vector<app::FlickerState> m_flicker_states{NUM_LAMPS, static_cast<app::FlickerState>(0)};
+
+    engine::graphics::Bloom *m_bloom;
+    engine::resources::Shader *m_blur_shader;
+    engine::resources::Shader *m_final_shader;
 };
 }// namespace app
 

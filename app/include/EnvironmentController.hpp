@@ -5,12 +5,16 @@
 #ifndef MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
 #define MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP
 
+
 #include <engine/core/Engine.hpp>
+#include <engine/graphics/Bloom.hpp>
 
 namespace app {
 class EnvironmentController : public engine::core::Controller {
 public:
     std::string_view name() const override;
+    engine::graphics::Bloom *get_bloom() const;
+    std::pair<engine::resources::Shader *, engine::resources::Shader *> get_bloom_shaders() const;
 
 private:
     void draw() override;
@@ -21,6 +25,10 @@ private:
     void draw_skybox();
     void draw_bench(glm::vec3 position, bool rotate = false);
     void draw_statue();
+
+    engine::graphics::Bloom *m_bloom;
+    engine::resources::Shader *m_blur_shader;
+    engine::resources::Shader *m_final_shader;
 };
 }// namespace app
 #endif//MATF_RG_PROJECT_ENVIRONMENTCONTROLLER_HPP

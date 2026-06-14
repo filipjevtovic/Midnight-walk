@@ -11,17 +11,15 @@
 
 namespace app {
 
-engine::resources::Bloom *bloom;
-engine::resources::Shader *blur_shader;
-engine::resources::Shader *final_shader;
-
 void EnvironmentController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
 
     const auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
-    bloom = resources->bloom(1920, 1080);
-    blur_shader = resources->shader("BlurShader");
-    final_shader = resources->shader("FinalShader");
+    const auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+    const auto platform = engine::platform::PlatformController::get<engine::platform::PlatformController>();
+    m_bloom = graphics->bloom_init(platform->window()->width(), platform->window()->height());
+    m_blur_shader = resources->shader("BlurShader");
+    m_final_shader = resources->shader("FinalShader");
 }
 
 std::string_view EnvironmentController::name() const {
@@ -30,7 +28,7 @@ std::string_view EnvironmentController::name() const {
 void EnvironmentController::draw() {
     const auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
 
-    graphics->bloom_begin(bloom);
+    graphics->bloom_begin(m_bloom);
 
     draw_ground();
 
@@ -152,6 +150,13 @@ void EnvironmentController::draw_statue() {
     lamps->set_point_lights(main_shader);
 
     statue->draw(main_shader);
+}
+
+engine::graphics::Bloom *EnvironmentController::get_bloom() const {
+    return m_bloom;
+}
+std::pair<engine::resources::Shader *, engine::resources::Shader *> EnvironmentController::get_bloom_shaders() const {
+    return std::make_pair(m_blur_shader, m_final_shader);
 }
 
 }// namespace app

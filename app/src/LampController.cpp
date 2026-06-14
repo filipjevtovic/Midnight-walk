@@ -5,6 +5,7 @@
 #include <FlashlightController.hpp>
 #include <GUIController.hpp>
 #include <LampController.hpp>
+#include <EnvironmentController.hpp>
 #include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 
@@ -13,9 +14,6 @@ namespace app {
 size_t LampController::num_lamps() const {
     return NUM_LAMPS;
 }
-
-extern engine::resources::Bloom *bloom;
-extern engine::resources::Shader *blur_shader, *final_shader;
 
 void LampController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
@@ -28,6 +26,12 @@ void LampController::initialize() {
     }
 
     m_last_change.assign(NUM_LAMPS, std::numeric_limits<float>::max());
+
+    const auto environment = engine::core::Controller::get<app::EnvironmentController>();
+    m_bloom = environment->get_bloom();
+    auto shaders = environment->get_bloom_shaders();
+    m_blur_shader = shaders.first;
+    m_final_shader = shaders.second;
 }
 
 std::string_view LampController::name() const {
@@ -40,8 +44,8 @@ void LampController::draw() {
     draw_lightbulbs();
     draw_street_lamps();
 
-    graphics->bloom_blur(blur_shader, bloom);
-    graphics->bloom_draw(final_shader, bloom);
+    graphics->bloom_blur(m_blur_shader, m_bloom);
+    graphics->bloom_draw(m_final_shader, m_bloom);
 }
 
 void LampController::set_point_lights(engine::resources::Shader *shader) const {

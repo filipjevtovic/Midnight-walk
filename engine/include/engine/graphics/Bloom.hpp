@@ -8,7 +8,8 @@
 #include <engine/graphics/GraphicsController.hpp>
 #include <spdlog/spdlog.h>
 
-namespace engine::resources {
+namespace engine::graphics {
+class GraphicsController;
 // Add doxygen annotations later (for AZRS project)...
 class Bloom {
     friend class ResourcesController;
@@ -35,6 +36,6 @@ private:
 
     mutable bool m_horizontal{false};
 };
-}// namespace engine::resources
+}// namespace engine::graphics
 
 #endif//MATF_RG_PROJECT_BLOOM_HPP

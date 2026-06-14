@@ -7,6 +7,7 @@
 #define GRAPHICSCONTROLLER_HPP
 
 #include <engine/core/Controller.hpp>
+#include <engine/graphics/Bloom.hpp>
 #include <engine/graphics/Camera.hpp>
 #include <engine/platform/PlatformEventObserver.hpp>
 
@@ -14,12 +15,12 @@ struct ImGuiContext;
 
 namespace engine::resources {
 class Skybox;
-class Bloom;
 
 class Shader;
 }// namespace engine::resources
 
 namespace engine::graphics {
+class Bloom;
 /**
 * @brief Parameters used to define a perspective projection matrix.
 */
@@ -87,9 +88,10 @@ public:
     */
     void draw_skybox(const resources::Shader *shader, const resources::Skybox *skybox);
 
-    void bloom_begin(const resources::Bloom *bloom);
-    void bloom_blur(const resources::Shader *blur_shader, const resources::Bloom *bloom);
-    void bloom_draw(const resources::Shader *final_shader, const resources::Bloom *bloom);
+    Bloom *bloom_init(int width, int height);
+    void bloom_begin(const graphics::Bloom *bloom);
+    void bloom_blur(const resources::Shader *blur_shader, const graphics::Bloom *bloom);
+    void bloom_draw(const resources::Shader *final_shader, const graphics::Bloom *bloom);
 
     Camera *camera() {
         return &m_camera;
@@ -165,6 +167,8 @@ private:
     void initialize() override;
 
     void terminate();
+
+    std::unique_ptr<Bloom> m_bloom;
 
     PerspectiveMatrixParams m_perspective_params{};
     OrthographicMatrixParams m_ortho_params{};
