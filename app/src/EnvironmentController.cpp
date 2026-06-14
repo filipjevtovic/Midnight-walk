@@ -16,8 +16,8 @@ void EnvironmentController::initialize() {
 
     const auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
     const auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
-    const auto platform = engine::platform::PlatformController::get<engine::platform::PlatformController>();
-    m_bloom = graphics->bloom_init(platform->window()->width(), platform->window()->height());
+
+    m_bloom = graphics->bloom();
     m_blur_shader = resources->shader("BlurShader");
     m_final_shader = resources->shader("FinalShader");
 }
@@ -152,9 +152,6 @@ void EnvironmentController::draw_statue() {
     statue->draw(main_shader);
 }
 
-engine::graphics::Bloom *EnvironmentController::get_bloom() const {
-    return m_bloom;
-}
 std::pair<engine::resources::Shader *, engine::resources::Shader *> EnvironmentController::get_bloom_shaders() const {
     return std::make_pair(m_blur_shader, m_final_shader);
 }

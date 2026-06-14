@@ -88,7 +88,7 @@ public:
     */
     void draw_skybox(const resources::Shader *shader, const resources::Skybox *skybox);
 
-    Bloom *bloom_init(int width, int height);
+    Bloom *bloom() const;
     void bloom_begin(const graphics::Bloom *bloom);
     void bloom_blur(const resources::Shader *blur_shader, const graphics::Bloom *bloom);
     void bloom_draw(const resources::Shader *final_shader, const graphics::Bloom *bloom);

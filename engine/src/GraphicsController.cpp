@@ -41,6 +41,8 @@ void GraphicsController::initialize() {
     (void) io;
     RG_GUARANTEE(ImGui_ImplGlfw_InitForOpenGL(handle, true), "ImGUI failed to initialize for OpenGL");
     RG_GUARANTEE(ImGui_ImplOpenGL3_Init("#version 330 core"), "ImGUI failed to initialize for OpenGL");
+
+    m_bloom = std::make_unique<Bloom>(platform->window()->width(), platform->window()->height());
 }
 
 void GraphicsController::terminate() {
@@ -90,8 +92,7 @@ void GraphicsController::draw_skybox(const resources::Shader *shader, const reso
     CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_CUBE_MAP, 0);
 }
 
-Bloom *GraphicsController::bloom_init(int width, int height) {
-    m_bloom = std::make_unique<Bloom>(width, height);
+Bloom *GraphicsController::bloom() const {
     return m_bloom.get();
 }
 

@@ -13,7 +13,6 @@ namespace app {
 class EnvironmentController : public engine::core::Controller {
 public:
     std::string_view name() const override;
-    engine::graphics::Bloom *get_bloom() const;
     std::pair<engine::resources::Shader *, engine::resources::Shader *> get_bloom_shaders() const;
 
 private:

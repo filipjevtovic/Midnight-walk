@@ -27,8 +27,9 @@ void LampController::initialize() {
 
     m_last_change.assign(NUM_LAMPS, std::numeric_limits<float>::max());
 
+    const auto graphics = engine::graphics::GraphicsController::get<engine::graphics::GraphicsController>();
     const auto environment = engine::core::Controller::get<app::EnvironmentController>();
-    m_bloom = environment->get_bloom();
+    m_bloom = graphics->bloom();
     auto shaders = environment->get_bloom_shaders();
     m_blur_shader = shaders.first;
     m_final_shader = shaders.second;
