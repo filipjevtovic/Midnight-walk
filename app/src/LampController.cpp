@@ -2,10 +2,10 @@
 // Created by filip on 18. 4. 2026.
 //
 
+#include <EnvironmentController.hpp>
 #include <FlashlightController.hpp>
 #include <GUIController.hpp>
 #include <LampController.hpp>
-#include <EnvironmentController.hpp>
 #include <engine/core/Engine.hpp>
 #include <engine/graphics/GraphicsController.hpp>
 

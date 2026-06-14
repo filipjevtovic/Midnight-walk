@@ -5,8 +5,8 @@
 #ifndef MATF_RG_PROJECT_LAMPCONTROLLER_HPP
 #define MATF_RG_PROJECT_LAMPCONTROLLER_HPP
 
-#include <engine/graphics/Bloom.hpp>
 #include <engine/core/Engine.hpp>
+#include <engine/graphics/Bloom.hpp>
 
 #define NUM_LAMPS (6)
 
