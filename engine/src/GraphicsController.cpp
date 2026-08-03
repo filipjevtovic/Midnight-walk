@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 #include <engine/graphics/GraphicsController.hpp>
+
+#include <engine/graphics/Bloom.hpp>
 #include <engine/graphics/OpenGL.hpp>
 #include <engine/platform/PlatformController.hpp>
 #include <engine/resources/Skybox.hpp>
@@ -39,6 +41,8 @@ void GraphicsController::initialize() {
     (void) io;
     RG_GUARANTEE(ImGui_ImplGlfw_InitForOpenGL(handle, true), "ImGUI failed to initialize for OpenGL");
     RG_GUARANTEE(ImGui_ImplOpenGL3_Init("#version 330 core"), "ImGUI failed to initialize for OpenGL");
+
+    m_bloom = std::make_unique<Bloom>(platform->window()->width(), platform->window()->height());
 }
 
 void GraphicsController::terminate() {
@@ -47,6 +51,7 @@ void GraphicsController::terminate() {
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
     }
+    m_bloom->destroy();
 }
 
 void GraphicsPlatformEventObserver::on_window_resize(int width, int height) {
@@ -86,4 +91,61 @@ void GraphicsController::draw_skybox(const resources::Shader *shader, const reso
     CHECKED_GL_CALL(glDepthFunc, GL_LESS);// set depth function back to default
     CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_CUBE_MAP, 0);
 }
+
+Bloom *GraphicsController::bloom() const {
+    return m_bloom.get();
+}
+
+void GraphicsController::bloom_begin(const graphics::Bloom *bloom) {
+    CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, bloom->m_hdr_fbo);
+    CHECKED_GL_CALL(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void GraphicsController::bloom_blur(const resources::Shader *blur_shader, const graphics::Bloom *bloom) {
+    CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
+
+    bool horizontal = true;
+    bool first_iteration = true;
+    int iterations = 10;
+
+    blur_shader->use();
+
+    for (int i = 0; i < iterations; i++) {
+        CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, bloom->m_pingpong_fbos[horizontal]);
+        CHECKED_GL_CALL(glViewport, 0, 0, bloom->m_width, bloom->m_height);
+        blur_shader->set_bool("horizontal", horizontal);
+        blur_shader->set_int("image", 0);
+        CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_2D, first_iteration ? bloom->m_color_buffers[1] : bloom->m_pingpong_color_buffers[!horizontal]);
+
+        // render quad
+        CHECKED_GL_CALL(glBindVertexArray, bloom->m_quad_vao);
+        CHECKED_GL_CALL(glDrawArrays, GL_TRIANGLE_STRIP, 0, 4);
+        CHECKED_GL_CALL(glBindVertexArray, 0);
+
+        horizontal = !horizontal;
+        if (first_iteration) {
+            first_iteration = false;
+        }
+    }
+    bloom->m_horizontal = horizontal;
+    CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
+}
+
+void GraphicsController::bloom_draw(const resources::Shader *final_shader, const graphics::Bloom *bloom) {
+    CHECKED_GL_CALL(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    final_shader->use();
+    final_shader->set_int("scene", 0);
+    final_shader->set_int("bloomBlur", 1);
+    final_shader->set_float("exposure", 0.15f);
+    CHECKED_GL_CALL(glActiveTexture, GL_TEXTURE0);
+    CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_2D, bloom->m_color_buffers[0]);
+    CHECKED_GL_CALL(glActiveTexture, GL_TEXTURE1);
+    CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_2D, bloom->m_pingpong_color_buffers[!bloom->m_horizontal]);
+
+    // render quad
+    CHECKED_GL_CALL(glBindVertexArray, bloom->m_quad_vao);
+    CHECKED_GL_CALL(glDrawArrays, GL_TRIANGLE_STRIP, 0, 4);
+    CHECKED_GL_CALL(glBindVertexArray, 0);
+}
+
 }// namespace engine::graphics

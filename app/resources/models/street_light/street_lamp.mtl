@@ -1,0 +1,32 @@
+# Blender 4.0.2 MTL File: 'lamp.blend'
+# www.blender.org
+
+newmtl Black_Painted_Iron_Material
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+illum 1
+map_Kd ./Lamp_UV_Map.png
+map_d ./Lamp_UV_Map.png
+
+newmtl Flame_Emission_Material
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+
+newmtl Glass_Material
+Ns 801.212830
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.200000 0.200000 0.200000
+Ni 6.050000
+d 0.250000
+illum 9

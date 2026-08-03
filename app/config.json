@@ -1,11 +1,28 @@
 {
   "resources": {
     "models": {
+      "street_lamp": {
+        "path": "street_light/street_lamp.obj",
+        "flip_uvs": true
+      },
+      "lightbulb": {
+        "path": "lightbulb/sphere.obj"
+      },
+      "ground": {
+        "path": "ground/ground.obj"
+      },
+      "bench": {
+        "path": "park-bench/park-bench.obj"
+      },
+      "statue": {
+        "path": "statue/monument.obj",
+        "flip_uvs": true
+      }
     }
   },
   "window": {
-    "height": 600,
-    "title": "Hello, window!",
-    "width": 800
+    "height": 1080,
+    "title": "Midnight walk",
+    "width": 1920
   }
 }

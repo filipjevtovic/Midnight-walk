@@ -7,7 +7,6 @@
 #include <engine/util/Configuration.hpp>
 #include <engine/util/Errors.hpp>
 #include <spdlog/spdlog.h>
-#include <unordered_set>
 #include <utility>
 
 namespace engine::resources {
@@ -269,5 +268,4 @@ TextureType AssimpSceneProcessor::assimp_texture_type_to_engine(aiTextureType ty
         default: RG_SHOULD_NOT_REACH_HERE("Engine currently doesn't support the aiTextureType: {}", static_cast<int>(type));
     }
 }
-
 }// namespace engine::resources
