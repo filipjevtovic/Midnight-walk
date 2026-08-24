@@ -47,13 +47,15 @@ docker run --rm --env DISPLAY=$DISPLAY\
 ```
 
 ## Project Structure
-app/
-├── include/       # Application headers 
-├── src/           # Application and scene controllers 
-├── resources/     # Models, textures and shaders 
-├── config.json    # Resource configuration 
-└── CMakeLists.txt 
-engine/             # Course-provided graphics engine 
+```text
+app/  
+├── include/       # Application headers  
+├── src/           # Application and scene controllers  
+├── resources/     # Models, textures and shaders  
+├── config.json    # Resource configuration  
+└── CMakeLists.txt  
+engine/             # Course-provided graphics engine  
+```
 
 ## Credits
 
