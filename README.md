@@ -26,7 +26,7 @@ The scene features custom lighting and post-processing effects.
 
 ## Building
 
-The project uses CMake for building and requirements can be installed via `setup.sh`
+Build the project and run it via:
 
 ### Linux
 
@@ -34,8 +34,16 @@ The project uses CMake for building and requirements can be installed via `setup
 git clone https://github.com/filipjevtovic/Midnight-walk.git
 cd Midnight-walk
 ./setup.sh
-cmake -S . -B build
-cmake --build build
+./build-project.sh
+cd build
+./APP
+```
+...or run it via Docker:
+```bash
+xhost +local:docker
+docker run --rm --env DISPLAY=$DISPLAY\
+      --volume /tmp/.X11-unix:/tmp/.X11-unix\
+      --device /dev/dri project-image
 ```
 
 ## Project Structure
